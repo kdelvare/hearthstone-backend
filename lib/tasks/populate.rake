@@ -106,6 +106,6 @@ namespace :db do
 	end
 
 	task populate_edhel: :environment do
-		Player.create(name: 'edhel')
+		User.create(name: 'edhel')
 	end
 end

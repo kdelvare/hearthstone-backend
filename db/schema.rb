@@ -39,10 +39,6 @@ ActiveRecord::Schema.define(version: 20180810051051) do
     t.boolean "standard"
   end
 
-  create_table "players", force: :cascade do |t|
-    t.string "name"
-  end
-
   create_table "rarities", primary_key: "hs_id", force: :cascade do |t|
     t.string "name"
     t.string "name_fr"
@@ -53,6 +49,10 @@ ActiveRecord::Schema.define(version: 20180810051051) do
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
   end
 
 end
