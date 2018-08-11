@@ -1,13 +1,14 @@
 class Cardclass < ActiveRecord::Base
-  self.primary_key = 'hs_id'
+	self.primary_key = 'hs_id'
+	has_many :cards
 
-  def create
-    respond_with Cardclass.create(cardclass_params)
-  end
+	def create
+		respond_with Cardclass.create(cardclass_params)
+	end
 
-  private
+	private
 
-  def cardclass_params
-    params.require(:cardclass).permit(:hs_id, :name)
-  end
+	def cardclass_params
+		params.require(:cardclass).permit(:hs_id, :name)
+	end
 end

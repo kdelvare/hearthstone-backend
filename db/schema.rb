@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180810051051) do
+ActiveRecord::Schema.define(version: 20180810190348) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade do |t|
     t.string "name"
@@ -30,6 +30,10 @@ ActiveRecord::Schema.define(version: 20180810051051) do
     t.integer "cost"
     t.integer "health"
     t.integer "atk"
+    t.integer "cardset_id"
+    t.integer "cardclass_id"
+    t.integer "type_id"
+    t.integer "rarity_id"
   end
 
   create_table "cardsets", primary_key: "hs_id", force: :cascade do |t|

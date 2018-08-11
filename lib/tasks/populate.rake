@@ -72,6 +72,7 @@ namespace :db do
 	end
 
 	task populate_cards: :environment do
+		Card.delete_all
 		@xml = File.open("CardDefs.xml") { |f| Nokogiri::XML(f) }
 		@xml.xpath("//Entity").each do |card|
 			collectible = card.xpath("Tag[@name='COLLECTIBLE']")
@@ -98,7 +99,11 @@ namespace :db do
 				rarity = Rarity.find_by(hs_id: card.xpath("Tag[@name='RARITY']").xpath("@value").to_s)
 				puts hs_card_id + ': rarity not found' unless rarity
 
-				card = Card.create(hs_id: hs_id, hs_card_id: hs_card_id, name: name, name_fr: name_fr, cardtext: cardtext, cardtext_fr: cardtext_fr, flavor: flavor, flavor_fr: flavor_fr, artist: artist, cost: cost, health: health, atk: atk)
+				card = Card.create(
+					hs_id: hs_id, hs_card_id: hs_card_id, name: name, name_fr: name_fr, cardtext: cardtext, cardtext_fr: cardtext_fr,
+					flavor: flavor, flavor_fr: flavor_fr, artist: artist, cost: cost, health: health, atk: atk,
+					cardset_id: cardset.id, cardclass_id: cardclass.id, type_id: type.id, rarity_id: rarity.id
+				)
 				#puts 'Created card ' + name
 				puts 'Card creation error' unless card
 			end

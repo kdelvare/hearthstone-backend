@@ -1,13 +1,14 @@
 class Cardset < ActiveRecord::Base
-  self.primary_key = 'hs_id'
+	self.primary_key = 'hs_id'
+	has_many :cards
 
-  def create
-    respond_with Cardset.create(cardset_params)
-  end
+	def create
+		respond_with Cardset.create(cardset_params)
+	end
 
-  private
+	private
 
-  def cardset_params
-    params.require(:cardset).permit(:hs_id, :name)
-  end
+	def cardset_params
+		params.require(:cardset).permit(:hs_id, :name)
+	end
 end
