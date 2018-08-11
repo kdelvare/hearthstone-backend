@@ -11,6 +11,7 @@ class Card < ActiveRecord::Base
 
 	scope :cardclass, -> (cardclass_id) { where cardclass_id: cardclass_id }
 	scope :cost, -> (cost) { where cost: cost }
+	scope :cardset, -> (cardset_id) { where cardset_id: cardset_id }
 
 	private
 
