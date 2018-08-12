@@ -1,11 +1,12 @@
 class CardsController < ApplicationController
 	def index
-		@cards = Card.where.not(type: 3)  # filter Hero cards
+		@cards = Card.where.not(type: 3).or(Card.where("cost > ?", 0))  # filter basic Hero cards
 		@cards = @cards.cardclass(params[:class]) if params[:class].present?
 		@cards = @cards.cost(params[:cost]) if params[:cost].present?
 		@cards = @cards.cardset(params[:cardset]) if params[:cardset].present?
 		#@cards = @cards.includes(:collections).where(collections: { user_id: [nil, params[:user]] }) if params[:user].present?
-		@cards = @cards.limit(14)
+		@cards = @cards.limit(28)
+		@cards = @cards.order(:cost, :name_fr)
 		render json: @cards, :include => :collections
 	end
 
