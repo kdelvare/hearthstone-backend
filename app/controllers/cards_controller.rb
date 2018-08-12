@@ -8,4 +8,17 @@ class CardsController < ApplicationController
 		@cards = @cards.limit(14)
 		render json: @cards, :include => :collections
 	end
+
+	def update
+		@card = Card.find(params[:id])
+		@card.update(card_params)
+		head :no_content
+	end
+
+	private
+
+	def card_params
+		logger.info "card params: #{params}"
+		params.permit(:collections)
+	end
 end
