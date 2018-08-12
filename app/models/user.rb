@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+	has_many :collections
+	has_many :cards, through: :collections
+
 	def create
 		respond_with User.create(user_params)
 	end

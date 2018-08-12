@@ -4,6 +4,8 @@ class Card < ActiveRecord::Base
 	belongs_to :cardclass
 	belongs_to :type
 	belongs_to :rarity
+	has_many :collections
+	has_many :users, through: :collections
 
 	def create
 		respond_with Card.create(card_params)

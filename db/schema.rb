@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180810190348) do
+ActiveRecord::Schema.define(version: 20180811183758) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade do |t|
     t.string "name"
@@ -41,6 +41,12 @@ ActiveRecord::Schema.define(version: 20180810190348) do
     t.string "name_fr"
     t.boolean "collectible"
     t.boolean "standard"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "card_id"
+    t.integer "number"
   end
 
   create_table "rarities", primary_key: "hs_id", force: :cascade do |t|
