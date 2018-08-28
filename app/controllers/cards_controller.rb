@@ -10,6 +10,11 @@ class CardsController < ApplicationController
 		render json: @cards, :include => [:cardset, :rarity, :collections]
 	end
 
+	def show
+		@card = Card.find(params[:id])
+		render json: @card
+	end
+
 	def update
 		@card = Card.find(params[:id])
 		@card.update(card_params)
