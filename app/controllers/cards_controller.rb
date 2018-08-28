@@ -5,9 +5,9 @@ class CardsController < ApplicationController
 		@cards = @cards.cost(params[:cost]) if params[:cost].present?
 		@cards = @cards.cardset(params[:cardset]) if params[:cardset].present?
 		#@cards = @cards.includes(:collections).where(collections: { user_id: [nil, params[:user]] }) if params[:user].present?
-		@cards = @cards.limit(28)
+		@cards = @cards.limit(params[:limit]) if params[:limit].present?
 		@cards = @cards.order(:cost, :name_fr)
-		render json: @cards, :include => :collections
+		render json: @cards, :include => [:cardset, :rarity, :collections]
 	end
 
 	def update

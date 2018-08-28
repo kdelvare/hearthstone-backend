@@ -6,6 +6,14 @@ class Rarity < ActiveRecord::Base
 		respond_with Rarity.create(rarity_params)
 	end
 
+	def type
+		self.class.name
+	end
+
+	def as_json(options = {})
+		super(options.merge({ :methods => :type }))
+	end
+
 	private
 
 	def rarity_params

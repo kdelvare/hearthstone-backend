@@ -6,6 +6,14 @@ class Cardset < ActiveRecord::Base
 		respond_with Cardset.create(cardset_params)
 	end
 
+	def type
+		self.class.name
+	end
+
+	def as_json(options = {})
+		super(options.merge({ :methods => :type }))
+	end
+
 	private
 
 	def cardset_params

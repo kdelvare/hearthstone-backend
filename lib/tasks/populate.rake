@@ -63,7 +63,7 @@ namespace :db do
 		Type.create(hs_id: 8, name: 'Item', name_fr: 'Objet', collectible: true)
 		Type.create(hs_id: 9, name: 'Token', name_fr: 'Jeton', collectible: true)
 		Type.create(hs_id: 10, name: 'Hero power', name_fr: 'Pouvoir héroïque', collectible: true)
-		Rarity.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: true)
+		Rarity.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: false)
 		Rarity.create(hs_id: 1, name: 'Common', name_fr: 'Commune', collectible: true)
 		Rarity.create(hs_id: 2, name: 'Free', name_fr: 'Gratuite', collectible: true)
 		Rarity.create(hs_id: 3, name: 'Rare', name_fr: 'Rare', collectible: true)
