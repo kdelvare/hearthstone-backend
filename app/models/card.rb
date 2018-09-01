@@ -6,6 +6,8 @@ class Card < ActiveRecord::Base
 	belongs_to :rarity
 	has_many :collections
 	has_many :users, through: :collections
+	has_many :deckcards
+	has_many :decks, through: :deckcards
 
 	def create
 		respond_with Card.create(card_params)

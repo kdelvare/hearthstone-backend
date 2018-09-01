@@ -1,9 +1,8 @@
 class CardclassesController < ApplicationController
 	def index
-		if params[:collectible] == "true"
-			render json: Cardclass.where(collectible: true)
-		else
-			render json: Cardclass.all
-		end
+		@cardclasses = Cardclass.all
+		@cardclasses = @cardclasses.where(collectible: true) if params[:collectible] == "true"
+		@cardclasses = @cardclasses.where(card: params[:card]) if params[:card].present?
+		render json: @cardclasses
 	end
 end

@@ -8,7 +8,7 @@ class Collection < ActiveRecord::Base
 
 	private
 
-	def user_params
+	def collection_params
 		params.require(:user_id, :card_id).permit(:number)
 	end
 end

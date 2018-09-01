@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180811183758) do
+ActiveRecord::Schema.define(version: 20180828194337) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade do |t|
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
+    t.integer "card_id"
   end
 
   create_table "cards", primary_key: "hs_id", force: :cascade do |t|
@@ -47,6 +48,18 @@ ActiveRecord::Schema.define(version: 20180811183758) do
     t.integer "user_id"
     t.integer "card_id"
     t.integer "number"
+  end
+
+  create_table "deckcards", force: :cascade do |t|
+    t.integer "deck_id"
+    t.integer "card_id"
+    t.integer "number"
+  end
+
+  create_table "decks", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.integer "cardclass_id"
   end
 
   create_table "rarities", primary_key: "hs_id", force: :cascade do |t|

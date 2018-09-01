@@ -22,6 +22,7 @@ Run 'rake db:migrate'
 Run 'rake db:populate' all at once, or step by step:
 - 'rake db:populate_enums' to fill sets, classes, types and rarities
 - 'rake db:populate_cards' to fill cards
+- 'rake db:populate_heroes' to update classes with hero cards (useful for deck import)
 
 * How to run the test suite
 
