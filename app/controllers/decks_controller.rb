@@ -1,6 +1,6 @@
 class DecksController < ApplicationController
 	def index
-		render json: Deck.all
+		render json: Deck.all, :include => [:cardclass]
 	end
 
 	def show
@@ -10,6 +10,12 @@ class DecksController < ApplicationController
 	def create
 		@deck = Deck.create(deck_params)
 		render json: @deck, status: :created
+	end
+
+	def update
+		@deck = Deck.find(params[:id])
+		@deck.update(deck_params)
+		head :no_content
 	end
 
 	private

@@ -7,6 +7,14 @@ class Cardclass < ActiveRecord::Base
 		respond_with Cardclass.create(cardclass_params)
 	end
 
+	def type
+		self.class.name
+	end
+
+	def as_json(options = {})
+		super(options.merge({ :methods => :type }))
+	end
+
 	private
 
 	def cardclass_params

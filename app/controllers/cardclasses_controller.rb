@@ -5,4 +5,9 @@ class CardclassesController < ApplicationController
 		@cardclasses = @cardclasses.where(card: params[:card]) if params[:card].present?
 		render json: @cardclasses
 	end
+
+	def show
+		@cardclass = Cardclass.find(params[:id])
+		render json: @cardclass
+	end
 end

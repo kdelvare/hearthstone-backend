@@ -1,4 +1,5 @@
 class Deck < ActiveRecord::Base
+	belongs_to :cardclass
 	has_many :deckcards
 	has_many :cards, through: :deckcards
 
