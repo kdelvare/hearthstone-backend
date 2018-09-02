@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-	resources :cardclasses
-	resources :cardsets
-	resources :rarities
-	resources :cards
-	resources :collections
-	resources :users
-	resources :decks
-	resources :deckcards
+	jsonapi_resources :cardclasses
+	jsonapi_resources :cardsets
+	jsonapi_resources :rarities
+	jsonapi_resources :cards
+	jsonapi_resources :collections
+	jsonapi_resources :users
+	jsonapi_resources :decks
+	jsonapi_resources :deckcards
 end

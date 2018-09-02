@@ -57,6 +57,10 @@ GEM
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     jsonapi-renderer (0.2.0)
+    jsonapi-resources (0.9.3)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -135,6 +139,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   byebug
+  jsonapi-resources
   listen (>= 3.0.5, < 3.2)
   mysql2
   puma (~> 3.7)

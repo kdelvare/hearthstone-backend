@@ -13,6 +13,15 @@ class Card < ActiveRecord::Base
 		respond_with Card.create(card_params)
 	end
 
+	def type
+		self.class.name
+	end
+
+	def as_json(options = {})
+		super(options.merge({ :methods => :type }))
+	end
+
+	default_scope { joins("LEFT JOIN collections ON collections.card_id = cards.hs_id") }
 	scope :cardclass, -> (cardclass_id) { where cardclass_id: cardclass_id }
 	scope :cost, -> (cost) { where cost: cost }
 	scope :cardset, -> (cardset_id) { where cardset_id: cardset_id }
