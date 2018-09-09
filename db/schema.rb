@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180828194337) do
+ActiveRecord::Schema.define(version: 20180909074917) do
 
-  create_table "cardclasses", primary_key: "hs_id", force: :cascade do |t|
+  create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
     t.integer "card_id"
   end
 
-  create_table "cards", primary_key: "hs_id", force: :cascade do |t|
+  create_table "cards", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "hs_card_id"
     t.string "name"
     t.string "name_fr"
@@ -37,44 +37,50 @@ ActiveRecord::Schema.define(version: 20180828194337) do
     t.integer "rarity_id"
   end
 
-  create_table "cardsets", primary_key: "hs_id", force: :cascade do |t|
+  create_table "cardsets", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
     t.boolean "standard"
   end
 
-  create_table "collections", force: :cascade do |t|
+  create_table "collections", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
     t.integer "card_id"
     t.integer "number"
   end
 
-  create_table "deckcards", force: :cascade do |t|
+  create_table "deckcards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "deck_id"
     t.integer "card_id"
     t.integer "number"
   end
 
-  create_table "decks", force: :cascade do |t|
+  create_table "deckgroups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.string "url"
+  end
+
+  create_table "decks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "url"
     t.integer "cardclass_id"
+    t.integer "deckgroup_id"
   end
 
-  create_table "rarities", primary_key: "hs_id", force: :cascade do |t|
+  create_table "rarities", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
   end
 
-  create_table "types", primary_key: "hs_id", force: :cascade do |t|
+  create_table "types", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
   end
 

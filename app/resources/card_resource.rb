@@ -1,7 +1,7 @@
 class CardResource < JSONAPI::Resource
 	attributes :hs_card_id, :name_fr, :cost
 
-	#belongs_to :cardset
+	belongs_to :cardset
 	belongs_to :cardclass
 	#belongs_to :type
 	belongs_to :rarity
