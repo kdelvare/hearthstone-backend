@@ -1,5 +1,6 @@
 class CardsetResource < JSONAPI::Resource
 	attributes :name_fr
+
 	#has_many :cards
 
 	filter :collectible,

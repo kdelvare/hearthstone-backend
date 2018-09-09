@@ -1,8 +1,8 @@
 class CardResource < JSONAPI::Resource
 	attributes :hs_card_id, :name_fr, :cost
+
 	#belongs_to :cardset
 	#belongs_to :rarity
-
 	has_many :collections
 
 	filter :collectible,

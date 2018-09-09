@@ -6,14 +6,6 @@ class Deckcard < ActiveRecord::Base
 		respond_with Deckcard.create(deckcard_params)
 	end
 
-	def type
-		self.class.name
-	end
-
-	def as_json(options = {})
-		super(options.merge({ :methods => :type }))
-	end
-
 	private
 
 	def deckcard_params
