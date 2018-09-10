@@ -7,4 +7,6 @@ class CardclassResource < JSONAPI::Resource
 		verify: ->(values, context) {
 			values.map { |value| value.casecmp('true') == 0 }
 		}
+
+	filter :card_id
 end
