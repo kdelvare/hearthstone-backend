@@ -111,6 +111,23 @@ namespace :db do
 		end
 	end
 
+	task dedupe_cards: :environment do
+		grouped = Card.all.group_by(&:hs_id)
+		grouped.values.each do |duplicates|
+			#puts 'Duplicates ' + duplicates.inspect
+			keep_first = duplicates.shift
+			duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
+		end
+	end
+
+	task dedupe_collections: :environment do
+		grouped = Collection.all.group_by{ |collection| [collection.user_id, collection.card_id] }
+		grouped.values.each do |duplicates|
+			keep_first = duplicates.shift
+			duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
+		end
+	end
+
 	task populate_heroes: :environment do
 		Cardclass.where(name_fr: "Druide").update(card_id: 274)
 		Cardclass.where(name_fr: "Chasseur").update(card_id: 31)

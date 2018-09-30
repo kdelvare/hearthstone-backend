@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-	has_many :collections
+	has_many :collections, dependent: :destroy
 	has_many :cards, through: :collections
 
 	def create
