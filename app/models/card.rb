@@ -13,7 +13,7 @@ class Card < ActiveRecord::Base
 		respond_with Card.create(card_params)
 	end
 
-	default_scope { joins("LEFT JOIN collections ON collections.card_id = cards.hs_id") }
+	#default_scope { joins("LEFT JOIN collections ON collections.card_id = cards.hs_id") }
 
 	private
 

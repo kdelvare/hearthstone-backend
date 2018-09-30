@@ -25,7 +25,7 @@ class CardResource < JSONAPI::Resource
 		def apply_filter(records, filter, value, options)
 			case filter
 			when :user
-					records.where('collections.user_id = ? OR collections.user_id IS NULL', value)
+					records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id").where('collections.user_id = ? OR collections.user_id IS NULL', value)
 				else
 					return super(records, filter, value)
 			end
