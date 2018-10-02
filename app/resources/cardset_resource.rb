@@ -1,5 +1,5 @@
 class CardsetResource < JSONAPI::Resource
-	attributes :name_fr
+	attributes :name_fr, :standard
 
 	#has_many :cards
 
