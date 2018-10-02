@@ -9,7 +9,9 @@ class StatsController < JSONAPI::ResourceController
 			:cardsets => [],
 			:rarities => [],
 			:owned => @owned.count,
-			:total => @collectible.count
+			:owned_std => @owned.joins(:cardset).where(cardsets: { standard: true }).count,
+			:total => @collectible.count,
+			:total_std => @collectible.joins(:cardset).where(cardsets: { standard: true }).count
 		}
 
 		@cardsets.each do |cardset|
@@ -28,7 +30,9 @@ class StatsController < JSONAPI::ResourceController
 		@rarities.each do |rarity|
 			total[:rarities][rarity.id] = {
 				:owned => @owned.where(rarity: rarity.id).count,
-				:total => @collectible.where(rarity: rarity.id).count
+				:owned_std => @owned.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).count,
+				:total => @collectible.where(rarity: rarity.id).count,
+				:total_std => @collectible.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).count
 			}
 		end
 
