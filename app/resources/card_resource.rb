@@ -7,6 +7,8 @@ class CardResource < JSONAPI::Resource
 	belongs_to :rarity
 	has_many :collections
 
+	filters :cardclass, :cost, :cardset, :user
+
 	filter :collectible,
 		apply: ->(records, value, _options) {
 			records.where.not(type_id: 3).or(records.where("cost > ?", 0)) # filter basic Hero cards
@@ -14,12 +16,13 @@ class CardResource < JSONAPI::Resource
 
 	filter :limit,
 		apply: ->(records, value, _options) {
-			#logger = Logger.new(STDOUT)
-			#logger.info "Limit filter value: #{value}"
 			records.limit(value.first)
 		}
 
-	filters :cardclass, :cost, :cardset, :user
+	filter :standard,
+		apply: ->(records, value, _options) {
+			records.joins(:cardset).where(cardsets: { standard: true })
+		}
 
 	class << self
 		def apply_filter(records, filter, value, options)
