@@ -7,7 +7,7 @@ class CardResource < JSONAPI::Resource
 	belongs_to :rarity
 	has_many :collections
 
-	filters :cardclass, :cost, :cardset, :user
+	filters :cardclass, :cost, :rarity, :cardset, :user
 
 	filter :collectible,
 		apply: ->(records, value, _options) {
