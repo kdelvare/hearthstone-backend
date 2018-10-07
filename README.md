@@ -24,10 +24,5 @@ Run 'rake db:populate' all at once, or step by step:
 - 'rake db:populate_cards' to fill cards
 - 'rake db:populate_heroes' to update classes with hero cards (useful for deck import)
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Database update with new CardDefs.xml
+Run 'rake db:populate_cards'
