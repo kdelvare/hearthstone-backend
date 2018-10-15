@@ -7,6 +7,8 @@ class CardResource < JSONAPI::Resource
 	belongs_to :rarity
 	has_many :collections
 
+	paginator :paged
+
 	filters :cardclass, :cost, :rarity, :cardset
 
 	filter :collectible,
