@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180909074917) do
+ActiveRecord::Schema.define(version: 20181019045546) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20180909074917) do
   create_table "cards", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "hs_card_id"
     t.string "name"
-    t.string "name_fr"
+    t.string "name_fr", collation: "utf8_unicode_ci"
     t.string "cardtext"
     t.string "cardtext_fr"
     t.text "flavor"
@@ -82,6 +82,18 @@ ActiveRecord::Schema.define(version: 20180909074917) do
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
+  end
+
+  create_table "wantedcards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "card_id"
+    t.integer "wanteddeck_id"
+    t.integer "number"
+  end
+
+  create_table "wanteddecks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "deck_id"
   end
 
 end
