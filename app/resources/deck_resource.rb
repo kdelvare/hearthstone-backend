@@ -4,6 +4,7 @@ class DeckResource < JSONAPI::Resource
 	belongs_to :cardclass
 	belongs_to :deckgroup
 	has_many :deckcards
+	has_many :wanteddecks
 
 	def self.default_sort
 		[{ field: 'cardclass_id', direction: 'asc' }]

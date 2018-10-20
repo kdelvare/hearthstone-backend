@@ -2,6 +2,7 @@ class Deck < ActiveRecord::Base
 	belongs_to :cardclass
 	has_many :deckcards
 	has_many :cards, through: :deckcards
+	has_many :wanteddecks
 
 	def create
 		respond_with Deck.create(deck_params)
