@@ -6,6 +6,7 @@ class CardResource < JSONAPI::Resource
 	#belongs_to :type
 	belongs_to :rarity
 	has_many :collections
+	has_many :wantedcards
 
 	paginator :paged
 
