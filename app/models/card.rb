@@ -8,6 +8,8 @@ class Card < ActiveRecord::Base
 	has_many :users, through: :collections
 	has_many :deckcards
 	has_many :decks, through: :deckcards
+	has_many :wantedcards
+	has_many :wanteddecks, through: :wantedcards
 
 	def create
 		respond_with Card.create(card_params)
