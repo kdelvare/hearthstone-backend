@@ -1,5 +1,5 @@
 class Wantedcard < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :card
-	belongs_to :wanteddeck
+	belongs_to :wanteddeck, optional: true
 end
