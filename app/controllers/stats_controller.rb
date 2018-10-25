@@ -19,10 +19,12 @@ class StatsController < JSONAPI::ResourceController
 			:cardsets => [],
 			:cardclasses => [],
 			:rarities => [],
-			:owned => 0,
-			:owned_std => 0,
-			:total => 0,
-			:total_std => 0
+			:owned => @owned.sum(:completion),
+			:owned_std => @owned.joins(:cardset).where(cardsets: { standard: true }).sum(:completion),
+			:total => @collectible.count +
+				@collectible.where.not(rarity: 5).count,
+			:total_std => @collectible.joins(:cardset).where(cardsets: { standard: true }).count +
+				@collectible.joins(:cardset).where(cardsets: { standard: true }).where.not(rarity: 5).count
 		}
 
 		@cardsets.each do |cardset|
@@ -33,8 +35,9 @@ class StatsController < JSONAPI::ResourceController
 			}
 			completion[:cardsets][cardset.id] = {
 				:rarities => [],
-				:owned => 0,
-				:total => 0
+				:owned => @owned.where(cardset: cardset.id).sum(:completion),
+				:total => @collectible.where(cardset: cardset.id).count +
+					@collectible.where(cardset: cardset.id).where.not(rarity: 5).count
 			}
 			@rarities.each do |rarity|
 				total[:cardsets][cardset.id][:rarities][rarity.id] = {
@@ -42,8 +45,9 @@ class StatsController < JSONAPI::ResourceController
 					:total => @collectible.where(cardset: cardset.id, rarity: rarity.id).count
 				}
 				completion[:cardsets][cardset.id][:rarities][rarity.id] = {
-					:owned => 0,
-					:total => 0
+					:owned => @owned.where(cardset: cardset.id, rarity: rarity.id).sum(:completion),
+					:total => @collectible.where(cardset: cardset.id, rarity: rarity.id).count +
+						@collectible.where(cardset: cardset.id, rarity: rarity.id).where.not(rarity: 5).count
 				}
 			end
 		end
@@ -57,10 +61,12 @@ class StatsController < JSONAPI::ResourceController
 			}
 			completion[:cardclasses][cardclass.id] = {
 				:rarities => [],
-				:owned => 0,
-				:owned_std => 0,
-				:total => 0,
-				:total_std => 0
+				:owned => @owned.where(cardclass: cardclass.id).sum(:completion),
+				:owned_std => @owned.joins(:cardset).where(cardclass: cardclass.id, cardsets: { standard: true }).sum(:completion),
+				:total => @collectible.where(cardclass: cardclass.id).count +
+					@collectible.where(cardclass: cardclass.id).where.not(rarity: 5).count,
+				:total_std => @collectible.joins(:cardset).where(cardclass: cardclass.id, cardsets: { standard: true }).count +
+					@collectible.joins(:cardset).where(cardclass: cardclass.id, cardsets: { standard: true }).where.not(rarity: 5).count
 			}
 			@rarities.each do |rarity|
 				total[:cardclasses][cardclass.id][:rarities][rarity.id] = {
@@ -70,10 +76,12 @@ class StatsController < JSONAPI::ResourceController
 					:total_std => @collectible.joins(:cardset).where(cardclass: cardclass.id, rarity: rarity.id, cardsets: { standard: true }).count
 				}
 				completion[:cardclasses][cardclass.id][:rarities][rarity.id] = {
-					:owned => 0,
-					:owned_std => 0,
-					:total => 0,
-					:total_std => 0
+					:owned => @owned.where(cardclass: cardclass.id, rarity: rarity.id).sum(:completion),
+					:owned_std => @owned.joins(:cardset).where(cardclass: cardclass.id, rarity: rarity.id, cardsets: { standard: true }).sum(:completion),
+					:total => @collectible.where(cardclass: cardclass.id, rarity: rarity.id).count +
+						@collectible.where(cardclass: cardclass.id, rarity: rarity.id).where.not(rarity: 5).count,
+					:total_std => @collectible.joins(:cardset).where(cardclass: cardclass.id, rarity: rarity.id, cardsets: { standard: true }).count +
+						@collectible.joins(:cardset).where(cardclass: cardclass.id, rarity: rarity.id, cardsets: { standard: true }).where.not(rarity: 5).count
 				}
 			end
 		end
@@ -85,44 +93,14 @@ class StatsController < JSONAPI::ResourceController
 				:total_std => @collectible.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).count
 			}
 			completion[:rarities][rarity.id] = {
-				:owned => 0,
-				:owned_std => 0,
-				:total => 0,
-				:total_std => 0
+				:owned => @owned.where(rarity: rarity.id).sum(:completion),
+				:owned_std => @owned.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).sum(:completion),
+				:total => @collectible.where(rarity: rarity.id).count +
+					@collectible.where(rarity: rarity.id).where.not(rarity: 5).count,
+				:total_std => @collectible.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).count +
+					@collectible.joins(:cardset).where(rarity: rarity.id, cardsets: { standard: true }).where.not(rarity: 5).count
 			}
 		end
-
-		@collectible.each do |card|
-			max_number = (card.rarity.name == "Legendary") ? 1 : 2
-			owned = card.collections.where(user_id: params[:user]).first
-			owned_number = owned ? owned.number : 0
-			owned_number = max_number if owned_number > max_number
-
-			completion[:total] += max_number
-			completion[:owned] += owned_number
-			completion[:cardsets][card.cardset.id][:total] += max_number
-			completion[:cardsets][card.cardset.id][:owned] += owned_number
-			completion[:cardsets][card.cardset.id][:rarities][card.rarity.id][:total] += max_number
-			completion[:cardsets][card.cardset.id][:rarities][card.rarity.id][:owned] += owned_number
-			completion[:cardclasses][card.cardclass.id][:total] += max_number
-			completion[:cardclasses][card.cardclass.id][:owned] += owned_number
-			completion[:cardclasses][card.cardclass.id][:rarities][card.rarity.id][:total] += max_number
-			completion[:cardclasses][card.cardclass.id][:rarities][card.rarity.id][:owned] += owned_number
-			completion[:rarities][card.rarity.id][:total] += max_number
-			completion[:rarities][card.rarity.id][:owned] += owned_number
-			if (card.cardset.standard)
-				completion[:total_std] += max_number
-				completion[:owned_std] += owned_number
-				completion[:cardclasses][card.cardclass.id][:total_std] += max_number
-				completion[:cardclasses][card.cardclass.id][:owned_std] += owned_number
-				completion[:cardclasses][card.cardclass.id][:rarities][card.rarity.id][:total_std] += max_number
-				completion[:cardclasses][card.cardclass.id][:rarities][card.rarity.id][:owned_std] += owned_number
-				completion[:rarities][card.rarity.id][:total_std] += max_number
-				completion[:rarities][card.rarity.id][:owned_std] += owned_number
-			end
-
-		end
-
 
 		render json: {
 			data: {

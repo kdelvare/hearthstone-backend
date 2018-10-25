@@ -114,9 +114,9 @@ namespace :db do
 	task dedupe_cards: :environment do
 		grouped = Card.all.group_by(&:hs_id)
 		grouped.values.each do |duplicates|
-			#puts 'Duplicates ' + duplicates.inspect
 			keep_first = duplicates.shift
-			duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
+			duplicates.each { |duplicate| puts 'Duplicate ' + duplicate.inspect } if duplicates.count > 0
+			#duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
 		end
 	end
 
@@ -124,7 +124,17 @@ namespace :db do
 		grouped = Collection.all.group_by{ |collection| [collection.user_id, collection.card_id] }
 		grouped.values.each do |duplicates|
 			keep_first = duplicates.shift
-			duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
+			duplicates.each { |duplicate| puts 'Duplicate ' + duplicate.inspect } if duplicates.count > 0
+			#duplicates.each { |duplicate| duplicate.destroy } if duplicates.count > 0
+		end
+	end
+
+	task compute_completion: :environment do
+		collections = Collection.all
+		collections.each do |collection|
+			max_number = (collection.card.rarity.name == "Legendary") ? 1 : 2
+			completion = (collection.number > max_number) ? max_number : collection.number
+			collection.update(completion: completion)
 		end
 	end
 
