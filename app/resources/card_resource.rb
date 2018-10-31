@@ -33,6 +33,11 @@ class CardResource < JSONAPI::Resource
 			records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
 		}
 
+	filter :extra,
+		apply: ->(records, value, _options) {
+			records.joins(:collections).where(collections: { user_id: value.first }).where("collections.number > 2 OR (cards.rarity_id = 5 AND collections.number > 1)")
+		}
+
 	filter :wanted,
 		apply: ->(records, value, _options) {
 			records.joins(:wantedcards).where(wantedcards: { user_id: value.first }).group("wantedcards.card_id").extending(GroupCountExtensions)
