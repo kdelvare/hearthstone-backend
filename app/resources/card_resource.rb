@@ -32,18 +32,17 @@ class CardResource < JSONAPI::Resource
 			records.joins(:cardset).where(cardsets: { standard: true })
 		}
 
-	filter :missing,
+	filter :own,
 		apply: ->(records, value, _options) {
-			records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
-		}
-
-	filter :extra,
-		apply: ->(records, value, _options) {
-			records.joins(:collections).where(collections: { user_id: value.first }).where("collections.number > 2 OR (cards.rarity_id = 5 AND collections.number > 1)")
-		}
-
-	filter :wanted,
-		apply: ->(records, value, _options) {
-			records.joins(:wantedcards).where(wantedcards: { user_id: value.first }).group("wantedcards.card_id").extending(GroupCountExtensions)
+			case value.first[0]
+			when "missing"
+				records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first[1]}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
+			when "wanted"
+				records.joins(:wantedcards).where(wantedcards: { user_id: value.first[1] }).group("wantedcards.card_id").extending(GroupCountExtensions)
+			when "extra"
+				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.number > 2 OR (cards.rarity_id = 5 AND collections.number > 1)")
+			else
+				records
+			end
 		}
 end
