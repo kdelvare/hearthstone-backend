@@ -31,6 +31,8 @@ class CardResource < JSONAPI::Resource
 	filter :own,
 		apply: ->(records, value, _options) {
 			case value.first[0]
+			when "owned"
+				records.joins(:collections).where(collections: { user_id: value.first[1] })
 			when "missing"
 				records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first[1]}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
 			when "wanted"
