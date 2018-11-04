@@ -11,10 +11,6 @@ class CardResource < JSONAPI::Resource
 
 	paginator :paged
 
-	def self.sortable_fields(context)
-		super + [:"cardclass_id"]
-	end
-
 	filters :cardclass, :cost, :rarity, :cardset
 
 	filter :collectible,
