@@ -134,7 +134,7 @@ namespace :db do
 		collections.each do |collection|
 			max_number = (collection.card.rarity.name == "Legendary") ? 1 : 2
 			completion = (collection.number > max_number) ? max_number : collection.number
-			collection.update(completion: completion)
+			collection.update(completion: completion, golden: 0)
 		end
 	end
 
