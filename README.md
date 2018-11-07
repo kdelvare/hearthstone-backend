@@ -22,7 +22,6 @@ Run 'rake db:migrate'
 Run 'rake db:populate' all at once, or step by step:
 - 'rake db:populate_enums' to fill sets, classes, types and rarities
 - 'rake db:populate_cards' to fill cards
-- 'rake db:populate_heroes' to update classes with hero cards (useful for deck import)
 - For correct FR sorting, change cards.name_fr collation to utf8_unicode_ci
 
 * Database update with new CardDefs.xml

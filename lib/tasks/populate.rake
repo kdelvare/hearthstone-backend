@@ -4,7 +4,6 @@ namespace :db do
 	task populate: :environment do
 		Rake::Task["db:populate_enums"].invoke
 		Rake::Task["db:populate_cards"].invoke
-		Rake::Task["db:populate_heroes"].invoke
 	end
 
 	task populate_enums: :environment do
@@ -136,18 +135,6 @@ namespace :db do
 			completion = (collection.number > max_number) ? max_number : collection.number
 			collection.update(completion: completion, golden: 0)
 		end
-	end
-
-	task populate_heroes: :environment do
-		Cardclass.where(name_fr: "Druide").update(card_id: 274)
-		Cardclass.where(name_fr: "Chasseur").update(card_id: 31)
-		Cardclass.where(name_fr: "Mage").update(card_id: 637)
-		Cardclass.where(name_fr: "Paladin").update(card_id: 671)
-		Cardclass.where(name_fr: "Prêtre").update(card_id: 813)
-		Cardclass.where(name_fr: "Voleur").update(card_id: 930)
-		Cardclass.where(name_fr: "Chaman").update(card_id: 1066)
-		Cardclass.where(name_fr: "Démoniste").update(card_id: 893)
-		Cardclass.where(name_fr: "Guerrier").update(card_id: 7)
 	end
 
 	task populate_edhel: :environment do

@@ -1,7 +1,6 @@
 class Cardclass < ActiveRecord::Base
 	self.primary_key = 'hs_id'
 	has_many :cards
-	belongs_to :card
 
 	def create
 		respond_with Cardclass.create(cardclass_params)

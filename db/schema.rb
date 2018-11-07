@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20181105195942) do
     t.string "name"
     t.string "name_fr"
     t.boolean "collectible"
-    t.integer "card_id"
   end
 
   create_table "cards", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
