@@ -86,7 +86,7 @@ namespace :db do
 				flavor = card.xpath("Tag[@name='FLAVORTEXT']/enUS").text
 				flavor_fr = card.xpath("Tag[@name='FLAVORTEXT']/frFR").text
 				artist = card.xpath("Tag[@name='ARTISTNAME']/enUS").text
-				cost = card.xpath("Tag[@name='COST']").xpath("@value").to_s
+				cost = card.xpath("Tag[@name='COST']").xpath("@value").to_s.to_i
 				health = card.xpath("Tag[@name='HEALTH']").xpath("@value").to_s
 				atk = card.xpath("Tag[@name='ATK']").xpath("@value").to_s
 
