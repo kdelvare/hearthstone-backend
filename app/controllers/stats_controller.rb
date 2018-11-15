@@ -9,15 +9,17 @@ class StatsController < JSONAPI::ResourceController
 		@cardsets = Cardset.where(collectible: true)
 		@cardclasses = Cardclass.where(collectible: true)
 		@rarities = Rarity.where(collectible: true)
-		standard = params[:standard].present?
+		standard = params[:standard] == "true"
 
+		@wanted_base = standard ? @wanted_std : @wanted
+		@collec_base = standard ? @collec_std : @collectible
 		completion = {
 			:cardsets => [],
 			:cardclasses => [],
 			:rarities => [],
-			:wanted => standard ? @wanted_std.sum(:number) : @wanted.sum(:number),
+			:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
 			:owned => standard ? @owned_std.sum(:completion) : @owned.sum(:completion),
-			:total => standard ? @collec_std.count + @collec_std.where.not(rarity: 5).count : @collectible.count + @collectible.where.not(rarity: 5).count
+			:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 		}
 		total = {
 			:cardsets => [],
@@ -29,11 +31,13 @@ class StatsController < JSONAPI::ResourceController
 
 		@cardsets.each do |cardset|
 			if (!standard || cardset.standard)
+				@wanted_base = @wanted.where(cardset: cardset.id)
+				@collec_base = @collectible.where(cardset: cardset.id)
 				completion[:cardsets][cardset.id] = {
 					:rarities => [],
-					:wanted => @wanted.where(cardset: cardset.id).sum(:number),
+					:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
 					:owned => @owned.where(cardset: cardset.id).sum(:completion),
-					:total => @collectible.where(cardset: cardset.id).count + @collectible.where(cardset: cardset.id).where.not(rarity: 5).count
+					:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 				}
 				total[:cardsets][cardset.id] = {
 					:rarities => [],
@@ -41,11 +45,12 @@ class StatsController < JSONAPI::ResourceController
 					:total => @collectible.where(cardset: cardset.id).count
 				} if params[:fullStats]
 				@rarities.each do |rarity|
+					@wanted_base = @wanted.where(cardset: cardset.id, rarity: rarity.id)
+					@collec_base = @collectible.where(cardset: cardset.id, rarity: rarity.id)
 					completion[:cardsets][cardset.id][:rarities][rarity.id] = {
-						:wanted => @wanted.where(cardset: cardset.id, rarity: rarity.id).sum(:number),
+						:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
 						:owned => @owned.where(cardset: cardset.id, rarity: rarity.id).sum(:completion),
-						:total => @collectible.where(cardset: cardset.id, rarity: rarity.id).count +
-							@collectible.where(cardset: cardset.id, rarity: rarity.id).where.not(rarity: 5).count
+						:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 					}
 					total[:cardsets][cardset.id][:rarities][rarity.id] = {
 						:owned => @owned.where(cardset: cardset.id, rarity: rarity.id).count,
@@ -56,12 +61,12 @@ class StatsController < JSONAPI::ResourceController
 		end
 
 		@rarities.each do |rarity|
+			@wanted_base = standard ? @wanted_std.where(rarity: rarity.id) : @wanted.where(rarity: rarity.id)
+			@collec_base = standard ? @collec_std.where(rarity: rarity.id) : @collectible.where(rarity: rarity.id)
 			completion[:rarities][rarity.id] = {
-				:wanted => standard ? @wanted_std.where(rarity: rarity.id).sum(:number) : @wanted.where(rarity: rarity.id).sum(:number),
+				:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
 				:owned => standard ? @owned_std.where(rarity: rarity.id).sum(:completion) : @owned.where(rarity: rarity.id).sum(:completion),
-				:total => standard ?
-					@collec_std.where(rarity: rarity.id).count + @collec_std.where(rarity: rarity.id).where.not(rarity: 5).count :
-					@collectible.where(rarity: rarity.id).count + @collectible.where(rarity: rarity.id).where.not(rarity: 5).count
+				:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 			}
 			total[:rarities][rarity.id] = {
 				:owned => standard ? @owned_std.where(rarity: rarity.id).count : @owned.where(rarity: rarity.id).count,
