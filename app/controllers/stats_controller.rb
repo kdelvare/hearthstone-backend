@@ -6,6 +6,8 @@ class StatsController < JSONAPI::ResourceController
 		@wanted_std = @wanted.joins(:cardset).where(cardsets: { standard: true })
 		@owned = Card.includes(:collections).where(collections: { user_id: params[:user] })
 		@owned_std =  @owned.joins(:cardset).where(cardsets: { standard: true })
+		@extra = @owned.where("rarity_id <> 5 AND collections.number > 2")
+		@extra_leg = @owned.where("rarity_id = 5 AND collections.number > 1")
 		@cardsets = Cardset.where(collectible: true)
 		@cardclasses = Cardclass.where(collectible: true)
 		@rarities = Rarity.where(collectible: true)
@@ -27,6 +29,10 @@ class StatsController < JSONAPI::ResourceController
 			:rarities => [],
 			:owned => standard ? @owned_std.count : @owned.count,
 			:total => standard ? @collec_std.count : @collectible.count
+		} if params[:fullStats]
+		extra = {
+			:rarities => [],
+			:total => (@extra.sum(:number) - 2 * @extra.count) + (@extra_leg.sum(:number) - @extra_leg.count)
 		} if params[:fullStats]
 
 		@cardsets.each do |cardset|
@@ -63,6 +69,7 @@ class StatsController < JSONAPI::ResourceController
 		@rarities.each do |rarity|
 			@wanted_base = standard ? @wanted_std.where(rarity: rarity.id) : @wanted.where(rarity: rarity.id)
 			@collec_base = standard ? @collec_std.where(rarity: rarity.id) : @collectible.where(rarity: rarity.id)
+			@extra_base = @owned.where(rarity: rarity.id).where("collections.number > 2") if rarity.id != 5
 			completion[:rarities][rarity.id] = {
 				:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
 				:owned => standard ? @owned_std.where(rarity: rarity.id).sum(:completion) : @owned.where(rarity: rarity.id).sum(:completion),
@@ -72,6 +79,7 @@ class StatsController < JSONAPI::ResourceController
 				:owned => standard ? @owned_std.where(rarity: rarity.id).count : @owned.where(rarity: rarity.id).count,
 				:total => standard ? @collec_std.where(rarity: rarity.id).count : @collectible.where(rarity: rarity.id).count
 			} if params[:fullStats]
+			extra[:rarities][rarity.id] = rarity.id == 5 ? @extra_leg.sum(:number) - @extra_leg.count : @extra_base.sum(:number) - 2 * @extra_base.count
 		end
 
 		if params[:fullStats]
@@ -109,7 +117,8 @@ class StatsController < JSONAPI::ResourceController
 				type: 'stat',
 				attributes: {
 					total: total,
-					completion: completion
+					completion: completion,
+					extra: extra
 				}
 			}
 		}
