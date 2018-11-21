@@ -3,4 +3,6 @@ class DeckgroupResource < JSONAPI::Resource
 
 	belongs_to :cardset
 	has_many :decks
+
+	filters :cardset
 end
