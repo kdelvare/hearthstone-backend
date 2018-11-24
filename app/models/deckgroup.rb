@@ -1,4 +1,5 @@
 class Deckgroup < ActiveRecord::Base
+	belongs_to :cardset
 	has_many :decks
 
 	def create
