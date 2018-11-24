@@ -1,7 +1,7 @@
 class CardResource < JSONAPI::Resource
 	include GroupCountExtensions
 
-	attributes :hs_card_id, :name_fr, :cost
+	attributes :hs_card_id, :name_fr, :cost, :atk, :health
 
 	belongs_to :cardset
 	belongs_to :cardclass
