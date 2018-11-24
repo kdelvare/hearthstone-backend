@@ -6,6 +6,7 @@ class CardResource < JSONAPI::Resource
 	belongs_to :cardset
 	belongs_to :cardclass
 	belongs_to :rarity
+	belongs_to :type
 	has_many :collections
 	has_many :wantedcards
 
