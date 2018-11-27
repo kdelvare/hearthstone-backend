@@ -16,4 +16,8 @@ class DeckResource < JSONAPI::Resource
 	def self.default_sort
 		[{ field: 'cardclass_id', direction: 'asc' }]
 	end
+
+	def self.sortable_fields(context)
+		super + [:"deckgroup.id"]
+	end
 end
