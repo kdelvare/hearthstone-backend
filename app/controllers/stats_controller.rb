@@ -28,6 +28,16 @@ class StatsController < JSONAPI::ResourceController
 			:owned => standard ? @owned_std.count : @owned.count,
 			:total => standard ? @collec_std.count : @collectible.count
 		} if params[:fullStats]
+		extrahs = {
+			:normal => {
+				:rarities => [],
+				:total => 0
+			},
+			:golden => {
+				:rarities => [],
+				:total => 0
+			}
+		} if params[:fullStats]
 		extra = {
 			:normal => {
 				:rarities => [],
@@ -84,17 +94,25 @@ class StatsController < JSONAPI::ResourceController
 					:owned => standard ? @owned_std.where(rarity: rarity.id).count : @owned.where(rarity: rarity.id).count,
 					:total => standard ? @collec_std.where(rarity: rarity.id).count : @collectible.where(rarity: rarity.id).count
 				}
+				extrahs[:normal][:rarities][rarity.id] = 0
+				extrahs[:golden][:rarities][rarity.id] = 0
 				extra[:normal][:rarities][rarity.id] = 0
 				extra[:golden][:rarities][rarity.id] = 0
 				@extra = @owned.where(rarity: rarity.id).where(rarity.id == 5 ? "collections.number > 1" : "collections.number > 2")
 				@extra.each do |extracard|
 					collection = extracard.collections.find_by(user_id: params[:user])
-					extra_number = collection.number - (rarity.id == 5 ? 1 : 2)
-					extra_normal = extra_number > collection.golden ? extra_number - collection.golden : 0
+					extra_total = collection.number - (rarity.id == 5 ? 1 : 2)
+					extra_golden = collection.golden - (rarity.id == 5 ? 1 : 2)
+					extra_golden = 0 if extra_golden < 0
+					extra_normal = extra_total - collection.golden
+					extrahs[:normal][:rarities][rarity.id] += extra_normal
+					extrahs[:normal][:total] += extra_normal
+					extrahs[:golden][:rarities][rarity.id] += extra_golden
+					extrahs[:golden][:total] += extra_golden
 					extra[:normal][:rarities][rarity.id] += extra_normal
 					extra[:normal][:total] += extra_normal
-					extra[:golden][:rarities][rarity.id] += extra_number - extra_normal
-					extra[:golden][:total] += extra_number - extra_normal
+					extra[:golden][:rarities][rarity.id] += extra_total - extra_normal
+					extra[:golden][:total] += extra_total - extra_normal
 				end
 			end
 		end
@@ -135,6 +153,7 @@ class StatsController < JSONAPI::ResourceController
 				attributes: {
 					total: total,
 					completion: completion,
+					extrahs: extrahs,
 					extra: extra
 				}
 			}
