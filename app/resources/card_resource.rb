@@ -35,7 +35,7 @@ class CardResource < JSONAPI::Resource
 			when "owned"
 				records.joins(:collections).where(collections: { user_id: value.first[1] })
 			when "golden"
-				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.golden > 0")
+				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.golden > 0").where.not(cards: { cardset_id: 2 })
 			when "missing"
 				records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first[1]}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
 			when "wanted"
