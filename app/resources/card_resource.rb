@@ -46,4 +46,27 @@ class CardResource < JSONAPI::Resource
 				records
 			end
 		}
+
+	def self.find_count(filters, options = {})
+		own = filters[:own]
+		filtered_records = filter_records(filters, options)
+		if own
+			case own.first[0]
+			when "owned"
+				filtered_records.sum("collections.number")
+			when "golden"
+				filtered_records.sum("collections.golden")
+			when "missing"
+				0
+			when "wanted"
+				0
+			when "extra"
+				0
+			else
+				count_records(filtered_records)
+			end
+		else
+			count_records(filtered_records)
+		end
+	end
 end
