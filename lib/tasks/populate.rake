@@ -39,6 +39,7 @@ namespace :db do
 		Cardset.create(hs_id: 1004, name: 'Lootapalooza', name_fr: 'Kobolds et catacombes', collectible: true, standard: true)
 		Cardset.create(hs_id: 1125, name: 'Gilneas', name_fr: 'Bois Maudit', collectible: true, standard: true)
 		Cardset.create(hs_id: 1127, name: 'Boomsday', name_fr: 'Projet Armageboum', collectible: true, standard: true)
+		Cardset.create(hs_id: 1129, name: 'Rastakhan', name_fr: 'Jeux de Rastakhan', collectible: true, standard: true)
 		Cardclass.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: false)
 		Cardclass.create(hs_id: 1, name: 'Deathknight', name_fr: 'Chevalier de la mort', collectible: false)
 		Cardclass.create(hs_id: 2, name: 'Druid', name_fr: 'Druide', collectible: true)
