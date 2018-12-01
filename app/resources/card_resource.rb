@@ -56,12 +56,6 @@ class CardResource < JSONAPI::Resource
 				filtered_records.sum("collections.number")
 			when "golden"
 				filtered_records.sum("collections.golden")
-			when "missing"
-				0
-			when "wanted"
-				0
-			when "extra"
-				0
 			else
 				count_records(filtered_records)
 			end
