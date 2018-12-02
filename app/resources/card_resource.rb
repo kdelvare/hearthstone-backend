@@ -56,6 +56,14 @@ class CardResource < JSONAPI::Resource
 				filtered_records.sum("collections.number")
 			when "golden"
 				filtered_records.sum("collections.golden")
+			when "missing"
+				filtered_records.length + filtered_records.where("collections.id IS NULL AND cards.rarity_id <> 5").length
+			when "wanted"
+				filtered_records.inject(0) do |sum, record|
+					sum + record.wantedcards.where(user_id: own.first[1]).maximum(:number)
+				end
+			when "extra"
+				filtered_records.sum("collections.number") - filtered_records.length - filtered_records.where("cards.rarity_id <> 5").length
 			else
 				count_records(filtered_records)
 			end
