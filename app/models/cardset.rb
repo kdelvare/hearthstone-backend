@@ -1,5 +1,6 @@
 class Cardset < ActiveRecord::Base
 	self.primary_key = 'hs_id'
+	belongs_to :year, optional: true
 	has_many :cards
 
 	def create

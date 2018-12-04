@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 	jsonapi_resources :cardclasses
+	jsonapi_resources :years
 	jsonapi_resources :cardsets
 	jsonapi_resources :rarities
 	jsonapi_resources :types
