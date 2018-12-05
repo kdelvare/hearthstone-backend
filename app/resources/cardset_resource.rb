@@ -1,7 +1,7 @@
 class CardsetResource < JSONAPI::Resource
 	attributes :name_fr, :standard
 
-	#has_many :cards
+	belongs_to :year
 
 	filter :collectible,
 		verify: ->(values, context) {
