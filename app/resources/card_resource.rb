@@ -34,6 +34,8 @@ class CardResource < JSONAPI::Resource
 			case value.first[0]
 			when "owned"
 				records.joins(:collections).where(collections: { user_id: value.first[1] })
+			when "goldenb"
+				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.golden > 0")
 			when "golden"
 				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.golden > 0").where.not(cards: { cardset_id: 2 })
 			when "missing"
@@ -54,6 +56,8 @@ class CardResource < JSONAPI::Resource
 			case own.first[0]
 			when "owned"
 				filtered_records.sum("collections.number")
+			when "goldenb"
+				filtered_records.sum("collections.golden")
 			when "golden"
 				filtered_records.sum("collections.golden")
 			when "missing"
