@@ -9,6 +9,7 @@ class CardResource < JSONAPI::Resource
 	belongs_to :type
 	has_many :collections
 	has_many :wantedcards
+	has_many :deckcards
 
 	paginator :paged
 
