@@ -30,6 +30,11 @@ class CardResource < JSONAPI::Resource
 			records.joins(:cardset).where(cardsets: { standard: true })
 		}
 
+	filter :tenplus,
+		apply: ->(records, value, _options) {
+			records.where("cost >= 10")
+		}
+
 	filter :own,
 		apply: ->(records, value, _options) {
 			case value.first[0]
