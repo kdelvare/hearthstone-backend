@@ -7,7 +7,7 @@ class DeckResource < JSONAPI::Resource
 	has_many :deckcards
 	has_many :wanteddecks
 
-	filters :cardclass
+	filters :cardclass, :user
 
 	filter :cardset,
 		apply: ->(records, value, _options) {
