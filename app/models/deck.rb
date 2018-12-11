@@ -1,6 +1,7 @@
 class Deck < ActiveRecord::Base
 	belongs_to :cardclass
-	belongs_to :deckgroup
+	belongs_to :deckgroup, optional: true
+	belongs_to :user, optional: true
 	has_many :deckcards
 	has_many :cards, through: :deckcards
 	has_many :wanteddecks

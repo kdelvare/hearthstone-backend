@@ -3,6 +3,7 @@ class DeckResource < JSONAPI::Resource
 
 	belongs_to :cardclass
 	belongs_to :deckgroup
+	belongs_to :user
 	has_many :deckcards
 	has_many :wanteddecks
 
