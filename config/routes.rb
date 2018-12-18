@@ -12,5 +12,6 @@ Rails.application.routes.draw do
 	jsonapi_resources :deckgroups
 	jsonapi_resources :wanteddecks
 	jsonapi_resources :wantedcards
+	jsonapi_resources :deckstats
 	resources :stats
 end

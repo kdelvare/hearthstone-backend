@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181211053944) do
+ActiveRecord::Schema.define(version: 20181218051721) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -70,6 +70,13 @@ ActiveRecord::Schema.define(version: 20181211053944) do
     t.integer "cardclass_id"
     t.integer "deckgroup_id"
     t.integer "user_id"
+  end
+
+  create_table "deckstats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "deck_id"
+    t.integer "user_id"
+    t.integer "win"
+    t.integer "loose"
   end
 
   create_table "rarities", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

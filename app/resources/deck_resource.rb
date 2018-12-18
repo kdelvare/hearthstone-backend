@@ -6,6 +6,7 @@ class DeckResource < JSONAPI::Resource
 	belongs_to :user
 	has_many :deckcards
 	has_many :wanteddecks
+	has_many :deckstats
 
 	filters :cardclass, :user
 

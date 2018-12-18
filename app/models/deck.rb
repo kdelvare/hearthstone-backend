@@ -5,6 +5,7 @@ class Deck < ActiveRecord::Base
 	has_many :deckcards, dependent: :delete_all
 	has_many :cards, through: :deckcards
 	has_many :wanteddecks
+	has_many :deckstats
 
 	def create
 		respond_with Deck.create(deck_params)
