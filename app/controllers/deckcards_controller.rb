@@ -3,9 +3,9 @@ class DeckcardsController < JSONAPI::ResourceController
 
 	def include_deck
 		if params[:include] == nil
-			params[:include] = 'deck,deck.cardclass,deck.deckgroup'
+			params[:include] = 'deck,deck.cardclass,deck.deckgroup,deck.user'
 			params[:fields] = {}
-			params[:fields][:decks] = 'name,cardclass,deckgroup'
+			params[:fields][:decks] = 'name,cardclass,deckgroup,user'
 		end
 	end
 end
