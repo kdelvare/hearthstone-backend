@@ -111,8 +111,10 @@ class StatsController < JSONAPI::ResourceController
 					extrahs[:golden][:total] += extra_golden
 					extra[:normal][:rarities][rarity.id] += extra_normal
 					extra[:normal][:total] += extra_normal
-					extra[:golden][:rarities][rarity.id] += extra_total - extra_normal
-					extra[:golden][:total] += extra_total - extra_normal
+					if rarity.id != 2
+						extra[:golden][:rarities][rarity.id] += extra_total - extra_normal
+						extra[:golden][:total] += extra_total - extra_normal
+					end
 				end
 			end
 		end
