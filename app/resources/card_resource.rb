@@ -48,6 +48,8 @@ class CardResource < JSONAPI::Resource
 				records.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{value.first[1]}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
 			when "wanted"
 				records.joins(:wantedcards).where(wantedcards: { user_id: value.first[1] }).group("wantedcards.card_id").extending(GroupCountExtensions)
+			when "mywanted"
+				records.joins(:wantedcards).where(wantedcards: { user_id: value.first[1], wanteddeck_id: nil }).group("wantedcards.card_id").extending(GroupCountExtensions)
 			when "extra"
 				records.joins(:collections).where(collections: { user_id: value.first[1] }).where("collections.number > 2 OR (cards.rarity_id = 5 AND collections.number > 1)")
 			else
@@ -71,6 +73,10 @@ class CardResource < JSONAPI::Resource
 			when "wanted"
 				filtered_records.inject(0) do |sum, record|
 					sum + record.wantedcards.where(user_id: own.first[1]).maximum(:number)
+				end
+			when "mywanted"
+				filtered_records.inject(0) do |sum, record|
+					sum + record.wantedcards.where(user_id: own.first[1], wanteddeck_id: nil).maximum(:number)
 				end
 			when "extra"
 				filtered_records.sum("collections.number") - filtered_records.length - filtered_records.where("cards.rarity_id <> 5").length
