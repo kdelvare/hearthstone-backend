@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  use_doorkeeper
 	jsonapi_resources :cardclasses
 	jsonapi_resources :years
 	jsonapi_resources :cardsets
