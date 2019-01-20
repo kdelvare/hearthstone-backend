@@ -10,6 +10,6 @@ class User < ActiveRecord::Base
 	private
 
 	def user_params
-		params.require(:user).permit(:name)
+		params.require(:user).permit(:name, :password)
 	end
 end
