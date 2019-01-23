@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  use_doorkeeper
+	use_doorkeeper
 	jsonapi_resources :cardclasses
 	jsonapi_resources :years
 	jsonapi_resources :cardsets
@@ -15,4 +15,5 @@ Rails.application.routes.draw do
 	jsonapi_resources :wantedcards
 	jsonapi_resources :deckstats
 	resources :stats
+	get 'current_user', to: 'users#me'
 end
