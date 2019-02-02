@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 	jsonapi_resources :wanteddecks
 	jsonapi_resources :wantedcards
 	jsonapi_resources :deckstats
+	jsonapi_resources :pitycounters
 	resources :stats
 	get 'current_user', to: 'users#me'
 end
