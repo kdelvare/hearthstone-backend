@@ -10,6 +10,7 @@ namespace :db do
 		yk = Year.create(name: 'Year of the Kraken', name_fr: 'Année du Kraken', standard: false)
 		ym = Year.create(name: 'Year of the Mammoth', name_fr: 'Année du Mammouth', standard: true)
 		yr = Year.create(name: 'Year of the Raven', name_fr: 'Année du Corbeau', standard: true)
+		yd = Year.create(name: 'Year of the Dragon', name_fr: 'Année du Dragon', standard: false)
 		Cardset.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: false, standard: false)
 		Cardset.create(hs_id: 1, name: 'Test temporary', name_fr: 'Test temporaire', collectible: false, standard: false)
 		Cardset.create(hs_id: 2, name: 'Core', name_fr: 'Basique', collectible: true, standard: true)
@@ -43,6 +44,7 @@ namespace :db do
 		Cardset.create(hs_id: 1125, name: 'Gilneas', name_fr: 'Bois Maudit', collectible: true, standard: true, year_id: yr.id)
 		Cardset.create(hs_id: 1127, name: 'Boomsday', name_fr: 'Projet Armageboum', collectible: true, standard: true, year_id: yr.id)
 		Cardset.create(hs_id: 1129, name: 'Rastakhan', name_fr: 'Jeux de Rastakhan', collectible: true, standard: true, year_id: yr.id)
+		Cardset.create(hs_id: 1130, name: 'Rise of Shadows', name_fr: 'L\'éveil des ombres', collectible: true, standard: false, year_id: yd.id)
 		Cardclass.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: false)
 		Cardclass.create(hs_id: 1, name: 'Deathknight', name_fr: 'Chevalier de la mort', collectible: false)
 		Cardclass.create(hs_id: 2, name: 'Druid', name_fr: 'Druide', collectible: true)
@@ -95,7 +97,8 @@ namespace :db do
 				atk = card.xpath("Tag[@name='ATK']").xpath("@value").to_s
 
 				cardset = Cardset.find_by(hs_id: card.xpath("Tag[@name='CARD_SET']").xpath("@value").to_s)
-				puts hs_card_id + ': cardset not found' unless cardset
+				#puts hs_card_id + ': cardset not found' unless cardset
+				cardset = Cardset.find_by(hs_id: 0) unless cardset
 				cardclass = Cardclass.find_by(hs_id: card.xpath("Tag[@name='CLASS']").xpath("@value").to_s)
 				puts hs_card_id + ': type not found' unless cardclass
 				type = Type.find_by(hs_id: card.xpath("Tag[@name='CARDTYPE']").xpath("@value").to_s)
