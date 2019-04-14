@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190411184822) do
+ActiveRecord::Schema.define(version: 20190414054048) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -77,8 +77,8 @@ ActiveRecord::Schema.define(version: 20190411184822) do
     t.integer "user_id"
     t.integer "win"
     t.integer "loose"
-    t.integer "win_casual"
-    t.integer "loose_casual"
+    t.integer "wincasual"
+    t.integer "loosecasual"
   end
 
   create_table "oauth_access_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
