@@ -14,6 +14,6 @@ class Deck < ActiveRecord::Base
 	private
 
 	def deck_params
-		params.require(:deck).permit(:name, :url, :cardclass_id)
+		params.require(:deck).permit(:name, :url, :deckstring, :cardclass_id)
 	end
 end
