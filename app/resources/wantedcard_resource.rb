@@ -4,4 +4,6 @@ class WantedcardResource < JSONAPI::Resource
 	belongs_to :user
 	belongs_to :card
 	belongs_to :wanteddeck
+
+	filters :user
 end

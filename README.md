@@ -26,3 +26,6 @@ Run 'rake db:populate' all at once, or step by step:
 
 * Database update with new CardDefs.xml
 Run 'rake db:populate_cards'
+
+* Find wantedcards from deleted wanteddecks
+Wantedcard.where('wantedcards.wanteddeck_id IS NOT NULL').where('NOT EXISTS (SELECT * FROM wanteddecks WHERE wanteddecks.id = wantedcards.wanteddeck_id)')
