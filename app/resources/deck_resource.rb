@@ -1,5 +1,5 @@
 class DeckResource < JSONAPI::Resource
-	attributes :name, :url, :deckstring
+	attributes :name, :url, :deckstring, :comment
 
 	belongs_to :cardclass
 	belongs_to :deckgroup

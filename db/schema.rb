@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190421042823) do
+ActiveRecord::Schema.define(version: 20190502164542) do
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20190421042823) do
     t.integer "deckgroup_id"
     t.integer "user_id"
     t.string "deckstring"
+    t.text "comment"
   end
 
   create_table "deckstats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
