@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 	jsonapi_resources :pitycounters
 	jsonapi_resources :packs
 	jsonapi_resources :arenas
+	jsonapi_resources :arenamatches
 	resources :stats
 	get 'current_user', to: 'users#me'
 end
