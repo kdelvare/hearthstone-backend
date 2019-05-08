@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190508045705) do
+ActiveRecord::Schema.define(version: 20190508055059) do
 
   create_table "arenamatches", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "arena_id"
     t.integer "cardclass_id"
     t.boolean "won"
+  end
+
+  create_table "arenarewards", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "arena_id"
+    t.integer "gold"
+    t.integer "dust"
+    t.integer "cardset_id"
+    t.integer "card_id"
+    t.boolean "golden"
   end
 
   create_table "arenas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

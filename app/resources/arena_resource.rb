@@ -4,6 +4,7 @@ class ArenaResource < JSONAPI::Resource
 	belongs_to :cardclass
 	belongs_to :user
 	has_many :arenamatches
+	has_many :arenarewards
 
 	filters :cardclass, :user
 end

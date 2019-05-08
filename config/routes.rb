@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 	jsonapi_resources :packs
 	jsonapi_resources :arenas
 	jsonapi_resources :arenamatches
+	jsonapi_resources :arenarewards
 	resources :stats
 	get 'current_user', to: 'users#me'
 end
