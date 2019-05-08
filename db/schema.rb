@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190502164542) do
+ActiveRecord::Schema.define(version: 20190508032649) do
+
+  create_table "arenas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.date "date"
+    t.integer "cardclass_id"
+    t.string "archetype"
+    t.float "score", limit: 24
+    t.boolean "done"
+    t.integer "win"
+  end
 
   create_table "cardclasses", primary_key: "hs_id", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
