@@ -12,7 +12,7 @@ class DeckgroupResource < JSONAPI::Resource
 		}
 
 	def self.sortable_fields(context)
-		super + [:"decks.cardclass_id"]
+		super + [:"decks.cardclass_id"] + [:cardset_id]
 	end
 
 	def self.apply_sort(records, order_options, context = {})
