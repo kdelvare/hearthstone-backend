@@ -6,6 +6,7 @@ class StatsController < JSONAPI::ResourceController
 		@wanted_std = @wanted.joins(:cardset).where(cardsets: { standard: true })
 		@owned = Card.includes(:collections).where(collections: { user_id: params[:user] })
 		@owned_std =  @owned.joins(:cardset).where(cardsets: { standard: true })
+		@missing = Card.joins("LEFT JOIN collections ON collections.card_id = cards.hs_id AND collections.user_id = #{params[:user]}").where("(collections.number = 1 AND cards.rarity_id <> 5) OR collections.id IS NULL")
 		@cardsets = Cardset.where(collectible: true)
 		@cardclasses = Cardclass.where(collectible: true)
 		@rarities = Rarity.where(collectible: true)
@@ -21,13 +22,6 @@ class StatsController < JSONAPI::ResourceController
 			:owned => standard ? @owned_std.sum(:completion) : @owned.sum(:completion),
 			:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 		}
-		total = {
-			:cardsets => [],
-			:cardclasses => [],
-			:rarities => [],
-			:owned => standard ? @owned_std.count : @owned.count,
-			:total => standard ? @collec_std.count : @collectible.count
-		} if params[:fullStats]
 		extrahs = {
 			:normal => {
 				:rarities => [],
@@ -59,23 +53,18 @@ class StatsController < JSONAPI::ResourceController
 					:owned => @owned.where(cardset: cardset.id).sum(:completion),
 					:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
 				}
-				total[:cardsets][cardset.id] = {
-					:rarities => [],
-					:owned => @owned.where(cardset: cardset.id).count,
-					:total => @collectible.where(cardset: cardset.id).count
-				} if params[:fullStats]
 				@rarities.each do |rarity|
 					@wanted_base = @wanted.where(cardset: cardset.id, rarity: rarity.id)
+					@missing_base = @missing.where(cardset: cardset.id, rarity: rarity.id)
 					@collec_base = @collectible.where(cardset: cardset.id, rarity: rarity.id)
 					completion[:cardsets][cardset.id][:rarities][rarity.id] = {
 						:wanted => @wanted_base.group(:card_id).length + @wanted_base.where(wantedcards: { number: 2 }).group(:card_id).length,
+						:wanted_uniq => @wanted_base.group(:card_id).length,
 						:owned => @owned.where(cardset: cardset.id, rarity: rarity.id).sum(:completion),
-						:total => @collec_base.count + @collec_base.where.not(rarity: 5).count
+						:missing => @missing_base.where(cardset: cardset.id, rarity: rarity.id).count,
+						:total => @collec_base.count + @collec_base.where.not(rarity: 5).count,
+						:unique => @collec_base.count
 					}
-					total[:cardsets][cardset.id][:rarities][rarity.id] = {
-						:owned => @owned.where(cardset: cardset.id, rarity: rarity.id).count,
-						:total => @collectible.where(cardset: cardset.id, rarity: rarity.id).count
-					} if params[:fullStats]
 				end
 			end
 		end
@@ -90,10 +79,6 @@ class StatsController < JSONAPI::ResourceController
 			}
 
 			if params[:fullStats]
-				total[:rarities][rarity.id] = {
-					:owned => standard ? @owned_std.where(rarity: rarity.id).count : @owned.where(rarity: rarity.id).count,
-					:total => standard ? @collec_std.where(rarity: rarity.id).count : @collectible.where(rarity: rarity.id).count
-				}
 				extrahs[:normal][:rarities][rarity.id] = 0
 				extrahs[:golden][:rarities][rarity.id] = 0
 				extra[:normal][:rarities][rarity.id] = 0
@@ -128,11 +113,6 @@ class StatsController < JSONAPI::ResourceController
 						@collec_std.where(cardclass: cardclass.id).count + @collec_std.where(cardclass: cardclass.id).where.not(rarity: 5).count :
 						@collectible.where(cardclass: cardclass.id).count + @collectible.where(cardclass: cardclass.id).where.not(rarity: 5).count
 				}
-				total[:cardclasses][cardclass.id] = {
-					:rarities => [],
-					:owned => standard ? @owned_std.where(cardclass: cardclass.id).count : @owned.where(cardclass: cardclass.id).count,
-					:total => standard ? @collec_std.where(cardclass: cardclass.id).count : @collectible.where(cardclass: cardclass.id).count
-				} if params[:fullStats]
 				@rarities.each do |rarity|
 					completion[:cardclasses][cardclass.id][:rarities][rarity.id] = {
 						:owned => standard ? @owned_std.where(cardclass: cardclass.id, rarity: rarity.id).sum(:completion) : @owned.where(cardclass: cardclass.id, rarity: rarity.id).sum(:completion),
@@ -140,10 +120,6 @@ class StatsController < JSONAPI::ResourceController
 							@collec_std.where(cardclass: cardclass.id, rarity: rarity.id).count + @collec_std.where(cardclass: cardclass.id, rarity: rarity.id).where.not(rarity: 5).count :
 							@collectible.where(cardclass: cardclass.id, rarity: rarity.id).count + @collectible.where(cardclass: cardclass.id, rarity: rarity.id).where.not(rarity: 5).count
 					}
-					total[:cardclasses][cardclass.id][:rarities][rarity.id] = {
-						:owned => standard ? @owned_std.where(cardclass: cardclass.id, rarity: rarity.id).count : @owned.where(cardclass: cardclass.id, rarity: rarity.id).count,
-						:total => standard ? @collec_std.where(cardclass: cardclass.id, rarity: rarity.id).count : @collectible.where(cardclass: cardclass.id, rarity: rarity.id).count
-					} if params[:fullStats]
 				end
 			end
 		end
@@ -153,7 +129,6 @@ class StatsController < JSONAPI::ResourceController
 				id: 1,
 				type: 'stat',
 				attributes: {
-					total: total,
 					completion: completion,
 					extrahs: extrahs,
 					extra: extra
