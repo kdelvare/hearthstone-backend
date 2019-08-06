@@ -45,6 +45,7 @@ namespace :db do
 		Cardset.create(hs_id: 1127, name: 'Boomsday', name_fr: 'Projet Armageboum', collectible: true, standard: true, year_id: yr.id)
 		Cardset.create(hs_id: 1129, name: 'Rastakhan', name_fr: 'Jeux de Rastakhan', collectible: true, standard: true, year_id: yr.id)
 		Cardset.create(hs_id: 1130, name: 'Rise of Shadows', name_fr: 'L\'éveil des ombres', collectible: true, standard: true, year_id: yd.id)
+		Cardset.create(hs_id: 1158, name: 'Saviors of Uldum', name_fr: 'Les aventuriers d\'Uldum', collectible: true, standard: true, year_id: yd.id)
 		Cardclass.create(hs_id: 0, name: 'Invalid', name_fr: 'Invalide', collectible: false)
 		Cardclass.create(hs_id: 1, name: 'Deathknight', name_fr: 'Chevalier de la mort', collectible: false)
 		Cardclass.create(hs_id: 2, name: 'Druid', name_fr: 'Druide', collectible: true)
