@@ -27,5 +27,13 @@ Run 'rake db:populate' all at once, or step by step:
 * Database update with new CardDefs.xml
 Run 'rake db:populate_cards'
 
+* Find wanteddecks from deleted decks
+Wanteddeck.where('NOT EXISTS (SELECT * FROM decks WHERE decks.id = wanteddecks.deck_id)')
 * Find wantedcards from deleted wanteddecks
 Wantedcard.where('wantedcards.wanteddeck_id IS NOT NULL').where('NOT EXISTS (SELECT * FROM wanteddecks WHERE wanteddecks.id = wantedcards.wanteddeck_id)')
+* Find decks from deleted deckgroups
+Deck.where('decks.deckgroup_id IS NOT NULL').where('NOT EXISTS (SELECT * FROM deckgroups WHERE deckgroups.id = decks.deckgroup_id)')
+* Find deckcards from deleted decks
+Deckcard.where('NOT EXISTS (SELECT * FROM decks WHERE decks.id = deckcards.deck_id)')
+* Find wantedcards that do not belong to the original deck anymore
+Wantedcard.where('wantedcards.wanteddeck_id IS NOT NULL').where('NOT EXISTS (SELECT * FROM wanteddecks INNER JOIN deckcards ON wanteddecks.deck_id = deckcards.deck_id WHERE wantedcards.wanteddeck_id = wanteddecks.id AND deckcards.card_id = wantedcards.card_id)')
